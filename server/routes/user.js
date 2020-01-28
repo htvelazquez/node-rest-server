@@ -3,10 +3,13 @@ const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
 const User = require('../models/user');
+
+const { verifyToken, verifyAdminRole } = require('../middlewares/auth');
+
 const app = express();
 
-app.get('/user', function (req, res) {
-	
+app.get('/user', verifyToken, (req, res) => {
+
 	let from = req.query.from || 0;
 	from = Number(from);
 
@@ -20,7 +23,7 @@ app.get('/user', function (req, res) {
 			if (err){
 				return res.status(400).json({
 					ok: false,
-					message: err
+					err
 				});
 			}
 
@@ -37,7 +40,7 @@ app.get('/user', function (req, res) {
 
 });
 
-app.post('/user', function (req, res) {
+app.post('/user', [verifyToken, verifyAdminRole], (req, res) => {
 
 	let body = req.body;
 
@@ -52,7 +55,7 @@ app.post('/user', function (req, res) {
 		if (err){
 			return res.status(400).json({
 				ok: false,
-				message: err
+				err
 			});
 		}
 
@@ -64,7 +67,7 @@ app.post('/user', function (req, res) {
 
 });
 
-app.put('/user/:id', function (req, res) {
+app.put('/user/:id', [verifyToken, verifyAdminRole], (req, res) => {
 
 	let id = req.params.id;
 	let body = _.pick(req.body, ['name', 'email', 'image', 'role', 'status'] );
@@ -73,7 +76,7 @@ app.put('/user/:id', function (req, res) {
 		if (err){
 			return res.status(400).json({
 				ok: false,
-				message: err
+				err
 			});
 		}
 
@@ -84,7 +87,7 @@ app.put('/user/:id', function (req, res) {
 	});
 });
 
-app.delete('/user/:id', function (req, res) {
+app.delete('/user/:id', [verifyToken, verifyAdminRole], (req, res) => {
 	let id = req.params.id;
 
 	let deletedProp = { status: false };
@@ -93,7 +96,7 @@ app.delete('/user/:id', function (req, res) {
 		if (err){
 			return res.status(400).json({
 				ok: false,
-				message: err
+				err
 			});
 		}
 
