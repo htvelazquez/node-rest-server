@@ -27,6 +27,11 @@ process.env.TOKEN_EXPIRATION = 60 * 60 * 24 * 30;
 process.env.TOKEN_SEED = process.env.TOKEN_SEED || 'secret-seed-dev';
 
 // ======================== //
+// ======+ Token Seed ===== //
+// ======================== //
+process.env.GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '286099481693-uq7de8osuqlchc5a375omk6pgaqh9dtg.apps.googleusercontent.com';
+
+// ======================== //
 // ======== Database ====== //
 // ======================== //
 
